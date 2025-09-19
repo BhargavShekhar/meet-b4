@@ -13,6 +13,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
+import { FaGithub, FaGoogle } from "react-icons/fa"
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -43,6 +44,24 @@ export const SignInView = () => {
         }, {
             onSuccess: () => {
                 router.push("/")
+                setPending(false)
+            },
+            onError: ({ error }) => {
+                setError(error.message)
+                setPending(false)
+            }
+        })
+    }
+
+    const onSocial = async (provider: "github" | "google") => {
+        setError(null);
+        setPending(true)
+
+        authClient.signIn.social({
+            provider,
+            callbackURL: "/"
+        }, {
+            onSuccess: () => {
                 setPending(false)
             },
             onError: ({ error }) => {
@@ -134,16 +153,19 @@ export const SignInView = () => {
                                         type="button"
                                         className="w-full"
                                         disabled={pending}
+                                        onClick={() => onSocial("google")}
                                     >
-                                        Google
+                                        <FaGoogle />
                                     </Button>
                                     <Button
                                         variant="outline"
                                         type="button"
                                         className="w-full"
                                         disabled={pending}
+                                        onClick={() => onSocial("github")}
+
                                     >
-                                        GitHub
+                                        <FaGithub />
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
