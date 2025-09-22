@@ -12,7 +12,6 @@ export const DashboardNavbar = () => {
     const [commandOpen, setCommandOpen] = useState(false);
 
     useEffect(() => {
-        console.log("helo")
         const down = (e: KeyboardEvent) => {
             if (e.key == "k" && (e.metaKey || e.ctrlKey)) {
                 console.log("combination clicked!!");

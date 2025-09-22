@@ -4,15 +4,14 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  try {
-    const session = await auth.api.getSession({
-      headers: await headers()
-    });
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
 
-    if (!session) redirect("/sign-in");
-
-    return <HomeView />;
-  } catch (error) {
-    console.log(error);
+  if (!session) {
+    console.log("session is null redirectig...");
+    redirect("/sign-in");
   }
+
+  return <HomeView />;
 }
