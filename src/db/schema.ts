@@ -61,7 +61,7 @@ export const verification = pgTable("verification", {
     .notNull(),
 });
 
-export const agent = pgTable("agents", {
+export const agents = pgTable("agents", {
   id: text("id").primaryKey().$default(() => nanoid()),
   name: text("name").notNull(),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
