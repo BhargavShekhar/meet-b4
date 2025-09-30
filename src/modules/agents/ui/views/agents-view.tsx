@@ -9,8 +9,11 @@ import { DataTable } from "../components/data-table";
 import { EmptyState } from "@/components/empty-state";
 import { useAgentsFilters } from "../../hooks/use-agents-filter";
 import { DataPaginiation } from "../components/data-pagination";
+import { useRouter } from "next/navigation";
 
 export const AgentsView = () => {
+    const router = useRouter();
+
     const [filters, setFilters] = useAgentsFilters()
 
     const trpc = useTRPC();
@@ -21,11 +24,15 @@ export const AgentsView = () => {
 
     return (
         <div className="flex-1 px-4 pb-4 md:px-8 flex flex-col gap-y-4">
-            <DataTable columns={columns} data={data.items} />
+            <DataTable
+                columns={columns}
+                data={data.items}
+                onRowClick={(row) => router.push(`/agents/${row.id}`)}
+            />
             <DataPaginiation
                 page={filters.page}
                 totalPages={data.tatalPages}
-                onPageChange={ (page) => setFilters({ page }) }
+                onPageChange={(page) => setFilters({ page })}
             />
             {data.items.length == 0 && (
                 <EmptyState
